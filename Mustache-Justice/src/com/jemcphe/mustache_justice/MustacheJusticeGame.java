@@ -49,7 +49,7 @@ public class MustacheJusticeGame implements ApplicationListener {
 		camera = new OrthographicCamera(1, screenHeight/screenWidth);
 		batch = new SpriteBatch();
 		background = new Texture(Gdx.files.internal("data/longstreet.gif"));
-		player = new Texture(Gdx.files.internal("data/mario.png"));
+		player = new Texture(Gdx.files.internal("data/player.png"));
 		leftButton = new Texture(Gdx.files.internal("data/left_arrow.png"));
 		rightButton = new Texture(Gdx.files.internal("data/right_arrow.png"));
 		jumpButton = new Texture(Gdx.files.internal("data/jump_button.png"));
@@ -70,7 +70,7 @@ public class MustacheJusticeGame implements ApplicationListener {
 		// Player Sprite 
 		TextureRegion playerRegion = new TextureRegion(player);
 		playerSprite = new Sprite(playerRegion);
-		playerSprite.setSize(0.08f, 0.1f);
+		playerSprite.setSize(0.07f, 0.13f);
 		//		playerSprite.setOrigin(0, 0);
 		playerSprite.setPosition(-.25f, -.17f);
 
