@@ -14,6 +14,8 @@ import com.badlogic.gdx.math.Vector2;
 
 public class MustacheJusticeGame implements ApplicationListener {
 
+	WorldController controller;
+	
 	private BackgroundAudio bgAudio;
 
 	private OrthographicCamera camera;
@@ -37,6 +39,8 @@ public class MustacheJusticeGame implements ApplicationListener {
 	@Override
 	public void create() {
 
+		controller = new WorldController();
+		
 		bgAudio = new BackgroundAudio();
 		bgAudio.create();
 
@@ -132,4 +136,6 @@ public class MustacheJusticeGame implements ApplicationListener {
 	@Override
 	public void resume() {
 	}
+	
+	
 }
