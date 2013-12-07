@@ -3,15 +3,27 @@ package com.jemcphe.mustache_justice;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.audio.Sound;
 
-public class WorldController {
 
+public class WorldController implements InputProcessor{
+
+	Sound footSteps = Gdx.audio.newSound(Gdx.files.internal("data/running.mp3"));
+	
+	public class TouchInfo {
+        public float touchX = 0;
+        public float touchY = 0;
+        public boolean touched = false;
+    }
+	
+	public Map<Integer,TouchInfo> touches = new HashMap<Integer,TouchInfo>();
+	
 	enum Keys {
 		LEFT, RIGHT, JUMP, HIT
 	}
-	
-	FootStepsAudio footSteps = new FootStepsAudio();
-	
+		
 	static Map<Keys, Boolean> keys = new HashMap<WorldController.Keys, Boolean>();
 	static{
 		keys.put(Keys.LEFT, false);
@@ -26,7 +38,7 @@ public class WorldController {
 	 }
 	 
 	 public void rightPressed() {
-	  keys.get(keys.put(Keys.RIGHT, true));
+		 footSteps.play();
 	 }
 	 
 	 public void jumpPressed() {
@@ -42,7 +54,7 @@ public class WorldController {
 	 }
 	 
 	 public void rightReleased() {
-	  keys.get(keys.put(Keys.RIGHT, false));
+	  footSteps.stop();
 	 }
 	 
 	 public void jumpReleased() {
@@ -58,10 +70,70 @@ public class WorldController {
 	 }
 	 
 	 private void processInput(){
-		 if (keys.get(Keys.LEFT)){
-			 // Left is pressed
-			 footSteps.create();
-		 }
+		 
 	 }
+
+	@Override
+	public boolean keyDown(int keycode) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean keyUp(int keycode) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean keyTyped(char character) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		// TODO Auto-generated method stub
+		if(pointer < 5){
+			System.out.println("Touch Down!");
+			if (screenX >= 65 && screenX <= 180 && screenY >= 600 && screenY <= 700){
+				System.out.println("Left Button Pressed");
+			}
+			
+//            touches.get(pointer).touchX = screenX;
+//            touches.get(pointer).touchY = screenX;
+//            touches.get(pointer).touched = true;
+        }
+		return true;
+	}
+
+	@Override
+	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+		if(pointer < 5){
+			System.out.println("Touch Up!");
+//            touches.get(pointer).touchX = 0;
+//            touches.get(pointer).touchY = 0;
+//            touches.get(pointer).touched = false;
+        }
+        return true;
+	}
+
+	@Override
+	public boolean touchDragged(int screenX, int screenY, int pointer) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean mouseMoved(int screenX, int screenY) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean scrolled(int amount) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 }

@@ -2,11 +2,10 @@ package com.jemcphe.mustache_justice;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Texture.TextureFilter;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -17,7 +16,7 @@ public class MustacheJusticeGame implements ApplicationListener {
 	WorldController controller;
 	
 	private BackgroundAudio bgAudio;
-
+	boolean isPlaying;
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
 	private Texture player;
@@ -34,16 +33,24 @@ public class MustacheJusticeGame implements ApplicationListener {
 	private Sprite jumpSprite;
 	private Sprite hitSprite;
 
+	private Sound footSteps;
+		
 	Vector2 position;
 
 	@Override
 	public void create() {
 
-		controller = new WorldController();
 		
+		
+		controller = new WorldController();
+		Gdx.input.setInputProcessor(controller);
 		bgAudio = new BackgroundAudio();
 		bgAudio.create();
-
+				
+		footSteps = Gdx.audio.newSound(Gdx.files.internal("data/running.mp3"));
+		
+		isPlaying = true;
+		
 		float screenWidth = Gdx.graphics.getWidth();
 		float screenHeight = Gdx.graphics.getHeight();
 
@@ -107,12 +114,42 @@ public class MustacheJusticeGame implements ApplicationListener {
 	public void dispose() {
 		batch.dispose();
 		player.dispose();
+		footSteps.dispose();
 	}
 
 	@Override
 	public void render() {		
 		Gdx.gl.glClearColor(0, 0, 0, 0);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		
+//		if(controller.touchDown(180, 600, 0, Buttons.LEFT)){
+//			System.out.println("Left Button pressed");
+//
+////			System.out.println("X: " + Gdx.input.getX() + " Y: " + Gdx.input.getY());
+////			if(Gdx.input.getX() >= 65 && Gdx.input.getX() <= 180 && Gdx.input.getY() >= 600 && Gdx.input.getY() <= 700){
+////				System.out.println("Left Button was pressed");
+////				if(footSteps != null){
+////					footSteps.play(.8f);
+////				}
+////				
+////			}
+//				
+//		}
+		
+//		String message = null;
+//        for(int i = 0; i < 5; i++){
+//            if(controller.touches.get(i).touched)
+//                message += "Finger:" + Integer.toString(i) + "touch at:" +
+//                        Float.toString(controller.touches.get(i).touchX) +
+//                        "," +
+//                        Float.toString(controller.touches.get(i).touchY) +
+//                        "\n";
+//                                
+//        }
+		
+		if(Gdx.input.isTouched() == false){
+			footSteps.stop();
+		}
 
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();

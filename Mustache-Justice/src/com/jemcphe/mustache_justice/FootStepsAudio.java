@@ -15,8 +15,8 @@ public class FootStepsAudio implements ApplicationListener {
 		
 		// loop through funkyTune
 		footSteps.setLooping(0, true);
-		footSteps.setVolume(0, 0.4f);
-		footSteps.play();
+		footSteps.setVolume(0, 0.8f);
+		
 	}
 
 	@Override
@@ -28,7 +28,7 @@ public class FootStepsAudio implements ApplicationListener {
 	@Override
 	public void render() {
 		// TODO Auto-generated method stub
-		
+		footSteps.play();
 	}
 
 	@Override
