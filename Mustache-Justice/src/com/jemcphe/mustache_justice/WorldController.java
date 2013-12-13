@@ -69,7 +69,8 @@ public class WorldController implements InputProcessor {
 	private void onCollisionMaxWithDonut(Donut donut) {
 		donut.collected = true;
 		score += donut.getScore();
-		Gdx.app.log(TAG, "Gold coin collected");
+		nomSound.play(.3f);
+		Gdx.app.log(TAG, "Donut collected");
 	};
 
 	private void testCollisions () {
@@ -103,6 +104,8 @@ public class WorldController implements InputProcessor {
 	Sound swingSound = Gdx.audio.newSound(Gdx.files.internal("data/arm_swing.mp3"));
 	// Hit Sound
 	Sound hitSound = Gdx.audio.newSound(Gdx.files.internal("data/hit_sound.mp3"));
+	// Nom Sound
+	Sound nomSound = Gdx.audio.newSound(Gdx.files.internal("data/nom_sound.wav"));
 
 	public WorldController() {
 		init();
@@ -135,6 +138,8 @@ public class WorldController implements InputProcessor {
 		}
 		
 		if (isGameWon()) {
+			leftIsTouched = false;
+			rightIsTouched = false;
 			timeLeftGameWonDelay -= deltaTime;
 			if (timeLeftGameWonDelay < 0){
 				init();
@@ -221,8 +226,16 @@ public class WorldController implements InputProcessor {
 			// Jump Button
 			if (screenX >= 775 && screenX <= 910 && screenY >= 610 && screenY <= 745){
 				System.out.println("Jump Button Pressed");
-				jumpSound.play();
-				level.max.setJumping(true);
+				/*
+				 * If in the air at all, disable jumping ability and jumping sound.
+				 * ONLY when GROUNDED, can the player jump.
+				 */
+				if(level.max.jumpState == JUMP_STATE.JUMP_RISING || level.max.jumpState == JUMP_STATE.JUMP_FALLING){
+					level.max.setJumping(false);
+				} else {
+					jumpSound.play(.2f);
+					level.max.setJumping(true);
+				}
 			}
 
 			// Punch Button
