@@ -1,14 +1,99 @@
 package com.jemcphe.mustache_justice;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.jemcphe.mustache_justice.Constants;
+import com.jemcphe.mustache_justice.MaxCassidy.JUMP_STATE;
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.math.Rectangle;
+import com.jemcphe.mustache_justice.MaxCassidy;
+import com.jemcphe.mustache_justice.Ground;
+import com.jemcphe.mustache_justice.Donut;
 
+public class WorldController implements InputProcessor {
 
-public class WorldController implements InputProcessor{
+	private static final String TAG = WorldController.class.getName();
+
+	public Level level;
+	public int lives;
+	public int score;
+	public CameraHelper cameraHelper;
+	float camMoveSpeed;
+	float camMoveSpeedAccelerationFactor;
+	boolean rightIsTouched = false;
+	boolean leftIsTouched = false;
+	private float timeLeftGameOverDelay;
+	private float timeLeftGameWonDelay;
+
+	// Rectangles for collision detection
+	private Rectangle r1 = new Rectangle();
+	private Rectangle r2 = new Rectangle();
+
+	private void onCollisionMaxWithGround(Ground ground) {
+		MaxCassidy max = level.max;
+		float heightDifference = Math.abs(max.position.y
+				- ( ground.position.y
+						+ ground.bounds.height));
+		if (heightDifference > 0.25f) {
+			boolean hitLeftEdge = max.position.x
+					> ( ground.position.x
+							+ ground.bounds.width / 2.0f);
+					if (hitLeftEdge) {
+						max.position.x = ground.position.x
+								+ ground.bounds.width;
+					} else {
+						max.position.x = ground.position.x
+								- ground.bounds.width;
+					}
+					return;
+		}
+		switch (max.jumpState) {
+		case GROUNDED:
+			break;
+		case FALLING:
+		case JUMP_FALLING:
+			max.position.y = ground.position.y
+			+ max.bounds.height
+			+ max.origin.y;
+			max.jumpState = JUMP_STATE.GROUNDED;
+			break;
+		case JUMP_RISING:
+			max.position.y = ground.position.y
+			+ max.bounds.height
+			+ max.origin.y;
+			break;
+		}
+	};
+	private void onCollisionMaxWithDonut(Donut donut) {
+		donut.collected = true;
+		score += donut.getScore();
+		Gdx.app.log(TAG, "Gold coin collected");
+	};
+
+	private void testCollisions () {
+		r1.set(level.max.position.x,
+				level.max.position.y,
+				level.max.bounds.width,
+				level.max.bounds.height);
+		// Test collision: Max Cassidy <-> Ground
+		for (Ground object : level.ground) {
+			r2.set(object.position.x, object.position.y,
+					object.bounds.width, object.bounds.height);
+			if (!r1.overlaps(r2)) continue;
+			onCollisionMaxWithGround(object);
+		}
+		// Test collision: Max Cassidy <-> Donuts
+		for (Donut donut : level.donuts) {
+			if (donut.collected) continue;
+			r2.set(donut.position.x, donut.position.y,
+					donut.bounds.width, donut.bounds.height);
+			if (!r1.overlaps(r2)) continue;
+			onCollisionMaxWithDonut(donut);
+			break;
+		}
+	}
 
 	// Footsteps Sound
 	Sound footSteps = Gdx.audio.newSound(Gdx.files.internal("data/running.mp3"));
@@ -18,66 +103,80 @@ public class WorldController implements InputProcessor{
 	Sound swingSound = Gdx.audio.newSound(Gdx.files.internal("data/arm_swing.mp3"));
 	// Hit Sound
 	Sound hitSound = Gdx.audio.newSound(Gdx.files.internal("data/hit_sound.mp3"));
-	
-	public class TouchInfo {
-		public float touchX = 0;
-		public float touchY = 0;
-		public boolean touched = false;
+
+	public WorldController() {
+		init();
+
 	}
 
-	public Map<Integer,TouchInfo> touches = new HashMap<Integer,TouchInfo>();
-
-	enum Keys {
-		LEFT, RIGHT, JUMP, HIT
+	private void initLevel() {
+		score = 0;
+		level = new Level(Constants.LEVEL_01);
+		cameraHelper.setTarget(level.max);
 	}
 
-	static Map<Keys, Boolean> keys = new HashMap<WorldController.Keys, Boolean>();
-	static{
-		keys.put(Keys.LEFT, false);
-		keys.put(Keys.RIGHT, false);
-		keys.put(Keys.JUMP, false);
-		keys.put(Keys.HIT, false);
+	private void init() {
+		Gdx.input.setInputProcessor(this);
+		cameraHelper = new CameraHelper();
+		lives = Constants.LIVES_START;
+		timeLeftGameOverDelay = 0;
+		timeLeftGameWonDelay = Constants.TIME_DELAY_GAME_WON;
+		initLevel();
 	}
 
-	// ** Key presses and touches **************** //	 
-	public void leftPressed() {
-		keys.get(keys.put(Keys.LEFT, true));
-	}
+	public void update (float deltaTime) {
+		//		handleDebugInput(deltaTime);
+		if (isGameOver()) {
+			System.out.println("Game Over");
+			timeLeftGameOverDelay -= deltaTime;
+			if (timeLeftGameOverDelay < 0) init();
+		} else {
+			handleInputGame(deltaTime);
+		}
+		
+		if (isGameWon()) {
+			timeLeftGameWonDelay -= deltaTime;
+			if (timeLeftGameWonDelay < 0){
+				init();
+			}
+		} else {
+			handleInputGame(deltaTime);
+		}
 
-	public void rightPressed() {
-		footSteps.play();
-	}
+		level.update(deltaTime);
+		testCollisions();
 
-	public void jumpPressed() {
-		keys.get(keys.put(Keys.JUMP, true));
-	}
+		if(Gdx.input.isTouched()){
+			if(rightIsTouched == true){
+				for (int i = 0; i<=105; i++){
+					if (level.max.position.x <= i){
+						System.out.println("rightIsTouched");
+						level.max.velocity.x = level.max.terminalVelocity.x;
 
-	public void hitPressed() {
-		keys.get(keys.put(Keys.HIT, false));
-	}
+					}
+				}
+			}
+			if(leftIsTouched == true){
+				for (int i = 0; i<=120; i++){
+					if (level.max.position.x >= i){
+						System.out.println("leftIsTouched");
+						level.max.velocity.x = -level.max.terminalVelocity.x;
 
-	public void leftReleased() {
-		keys.get(keys.put(Keys.LEFT, false));
-	}
+					}
+				}
+			}
 
-	public void rightReleased() {
-		footSteps.stop();
-	}
+		}
 
-	public void jumpReleased() {
-		keys.get(keys.put(Keys.JUMP, false));
-	}
-
-	public void hitReleased() {
-		keys.get(keys.put(Keys.HIT, false));
-	}
-
-	public void update(){
-		processInput();
-	}
-
-	private void processInput(){
-
+		cameraHelper.update(deltaTime);
+		
+		if (!isGameOver() && isPlayerInAbyss()) {
+			lives--;
+			if (isGameOver())
+				timeLeftGameOverDelay = Constants.TIME_DELAY_GAME_OVER;
+			else
+				initLevel();
+		}
 	}
 
 	@Override
@@ -88,7 +187,6 @@ public class WorldController implements InputProcessor{
 
 	@Override
 	public boolean keyUp(int keycode) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -100,11 +198,13 @@ public class WorldController implements InputProcessor{
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		// TODO Auto-generated method stub
-		if(pointer < 2){
+		if(pointer <= 2){
 			System.out.println("Touch Down!");
+			// Left Button
 			if (screenX >= 65 && screenX <= 180 && screenY >= 600 && screenY <= 730){
 				System.out.println("Left Button Pressed");
+				rightIsTouched = false;
+				leftIsTouched = true;
 				footSteps.setLooping(0, true);
 				footSteps.play();
 			}
@@ -112,6 +212,8 @@ public class WorldController implements InputProcessor{
 			// Right Button
 			if (screenX >= 240 && screenX <= 370 && screenY >= 600 && screenY <= 730){
 				System.out.println("Right Button Pressed");
+				rightIsTouched = true;
+				leftIsTouched = false;
 				footSteps.setLooping(0, true);
 				footSteps.play();
 			}
@@ -120,6 +222,7 @@ public class WorldController implements InputProcessor{
 			if (screenX >= 775 && screenX <= 910 && screenY >= 610 && screenY <= 745){
 				System.out.println("Jump Button Pressed");
 				jumpSound.play();
+				level.max.setJumping(true);
 			}
 
 			// Punch Button
@@ -127,22 +230,31 @@ public class WorldController implements InputProcessor{
 				System.out.println("Punch Button Pressed");
 				swingSound.play();
 			}
-
-			//            touches.get(pointer).touchX = screenX;
-			//            touches.get(pointer).touchY = screenX;
-			//            touches.get(pointer).touched = true;
 		}
 		return true;
 	}
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		if(pointer < 5){
-			System.out.println("Touch Up!");
+		if(pointer < 1){
+			System.out.println("Touch Up! No Fingers On Screen");
 			footSteps.stop();
-			//            touches.get(pointer).touchX = 0;
-			//            touches.get(pointer).touchY = 0;
-			//            touches.get(pointer).touched = false;
+			level.max.setJumping(false);
+			rightIsTouched = false;
+			leftIsTouched = false;
+		} else {
+			if(leftIsTouched == true){
+				System.out.println("Still one finger on screen");
+				rightIsTouched = false;
+				level.max.setJumping(false);
+			}
+			if(rightIsTouched == true){
+				System.out.println("Still one finger on screen");
+				leftIsTouched = false;
+				level.max.setJumping(false);
+
+			}
+
 		}
 		return true;
 	}
@@ -164,5 +276,48 @@ public class WorldController implements InputProcessor{
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	private void handleInputGame (float deltaTime) {
+		if (cameraHelper.hasTarget(level.max)) {
+			// Player Movement
+			if (Gdx.input.isKeyPressed(Keys.LEFT)) {
+				level.max.velocity.x =
+						-level.max.terminalVelocity.x;
+			} else if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
+				level.max.velocity.x =
+						level.max.terminalVelocity.x;
+			} else {
+				/*
+				 * Execute auto-forward movement on non-desktop platform.
+				 * EXCLUDE FROM FINAL BUILD.
+				 */
+				if (Gdx.app.getType() != ApplicationType.Desktop) {
+					//	level.max.velocity.x = level.max.terminalVelocity.x;
+				}
+			}
+			// Player Jump
+			if (Gdx.input.isKeyPressed(Keys.SPACE))
+				level.max.setJumping(true);
+		} else {
+			level.max.setJumping(false);
+		}
+	}
+
+	// Game Won
+	public boolean isGameWon() {
+		return level.max.position.x >= 104;
+	}
+
+	// Game Over
+	public boolean isGameOver() {
+		return lives < 0;
+	}
+	// Player Fell into the Abyss
+	public boolean isPlayerInAbyss () {
+		return level.max.position.y < -5;
+	}
+
+
+
 
 }

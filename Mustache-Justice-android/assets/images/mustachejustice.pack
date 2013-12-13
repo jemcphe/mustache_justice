@@ -1,0 +1,40 @@
+
+mustachejustice.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+buttonoverlay
+  rotate: false
+  xy: 1, 459
+  size: 459, 52
+  orig: 459, 52
+  offset: 0, 0
+  index: -1
+ground_middle
+  rotate: false
+  xy: 1, 101
+  size: 86, 356
+  orig: 86, 356
+  offset: 0, 0
+  index: -1
+ground_edge
+  rotate: false
+  xy: 89, 101
+  size: 63, 356
+  orig: 63, 356
+  offset: 0, 0
+  index: -1
+player
+  rotate: false
+  xy: 1, 1
+  size: 38, 98
+  orig: 38, 98
+  offset: 0, 0
+  index: -1
+donut
+  rotate: false
+  xy: 154, 402
+  size: 55, 55
+  orig: 55, 55
+  offset: 0, 0
+  index: -1
