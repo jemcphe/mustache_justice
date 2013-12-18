@@ -11,8 +11,17 @@ import com.badlogic.gdx.math.Rectangle;
 import com.jemcphe.mustache_justice.MaxCassidy;
 import com.jemcphe.mustache_justice.Ground;
 import com.jemcphe.mustache_justice.Donut;
+import com.badlogic.gdx.Game;
+import com.jemcphe.mustache_justice.MenuScreen;
 
 public class WorldController implements InputProcessor {
+
+	private Game game;
+	
+	private void backToMenu () {
+		// switch to menu screen
+		game.setScreen(new MenuScreen(game));
+	}
 
 	private static final String TAG = WorldController.class.getName();
 
@@ -107,7 +116,8 @@ public class WorldController implements InputProcessor {
 	// Nom Sound
 	Sound nomSound = Gdx.audio.newSound(Gdx.files.internal("data/nom_sound.wav"));
 
-	public WorldController() {
+	public WorldController(Game game) {
+		this.game = game;
 		init();
 
 	}
@@ -132,11 +142,11 @@ public class WorldController implements InputProcessor {
 		if (isGameOver()) {
 			System.out.println("Game Over");
 			timeLeftGameOverDelay -= deltaTime;
-			if (timeLeftGameOverDelay < 0) init();
+			if (timeLeftGameOverDelay < 0) backToMenu();
 		} else {
 			handleInputGame(deltaTime);
 		}
-		
+
 		if (isGameWon()) {
 			leftIsTouched = false;
 			rightIsTouched = false;
@@ -174,7 +184,7 @@ public class WorldController implements InputProcessor {
 		}
 
 		cameraHelper.update(deltaTime);
-		
+
 		if (!isGameOver() && isPlayerInAbyss()) {
 			lives--;
 			if (isGameOver())
@@ -269,6 +279,7 @@ public class WorldController implements InputProcessor {
 			}
 
 		}
+		
 		return true;
 	}
 

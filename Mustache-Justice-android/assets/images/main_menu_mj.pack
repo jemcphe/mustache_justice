@@ -1,0 +1,61 @@
+
+main_menu_mj.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+background_main_menu
+  rotate: false
+  xy: 1, 464
+  size: 800, 480
+  orig: 800, 480
+  offset: 0, 0
+  index: -1
+logo
+  rotate: false
+  xy: 1, 265
+  size: 715, 197
+  orig: 715, 197
+  offset: 0, 0
+  index: -1
+credits_dn
+  rotate: false
+  xy: 1, 177
+  size: 345, 86
+  orig: 345, 86
+  offset: 0, 0
+  index: -1
+credits_up
+  rotate: false
+  xy: 1, 89
+  size: 345, 86
+  orig: 345, 86
+  offset: 0, 0
+  index: -1
+play_dn
+  rotate: false
+  xy: 348, 177
+  size: 345, 86
+  orig: 345, 86
+  offset: 0, 0
+  index: -1
+play_up
+  rotate: false
+  xy: 1, 1
+  size: 345, 86
+  orig: 345, 86
+  offset: 0, 0
+  index: -1
+help_dn
+  rotate: false
+  xy: 803, 896
+  size: 158, 48
+  orig: 158, 48
+  offset: 0, 0
+  index: -1
+help_up
+  rotate: false
+  xy: 348, 127
+  size: 158, 48
+  orig: 158, 48
+  offset: 0, 0
+  index: -1

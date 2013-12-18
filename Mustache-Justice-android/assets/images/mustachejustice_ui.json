@@ -1,0 +1,24 @@
+{
+	com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
+		play: { 
+			down: play_dn, 
+			up: play_up 
+		},
+		credits: { 
+			down: credits_dn, 
+			up: credits_up 
+		},
+		help: {
+			down: help_dn,
+			up: help_up
+		}
+	},
+	com.badlogic.gdx.scenes.scene2d.ui.Image: {
+		background: { 
+			drawable: background_main_menu 
+		},
+		logo: { 
+			drawable: logo 
+		}
+	},
+}
