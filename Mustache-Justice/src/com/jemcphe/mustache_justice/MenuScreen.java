@@ -120,6 +120,12 @@ public class MenuScreen extends AbstractGameScreen{
 		// Add Help Button
 		help = new Button(skinMustacheJustice, "help");
 		layer.add(help);
+		help.addListener(new ChangeListener(){
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				onHelpClicked();
+			}
+		});
 		if (debugEnabled) layer.debug();
 
 		return layer;
@@ -173,5 +179,7 @@ public class MenuScreen extends AbstractGameScreen{
 		game.setScreen(new CreditsScreen(game));
 	}
 
-	private void onOptionsClicked () { }
+	private void onHelpClicked() { 
+		game.setScreen(new HelpScreen(game));
+	}
 }

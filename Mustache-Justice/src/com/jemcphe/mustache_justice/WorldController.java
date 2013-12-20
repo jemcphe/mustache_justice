@@ -152,7 +152,7 @@ public class WorldController implements InputProcessor {
 			rightIsTouched = false;
 			timeLeftGameWonDelay -= deltaTime;
 			if (timeLeftGameWonDelay < 0){
-				init();
+				backToMenu();
 			}
 		} else {
 			handleInputGame(deltaTime);

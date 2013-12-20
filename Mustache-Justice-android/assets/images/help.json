@@ -1,0 +1,13 @@
+{
+	com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
+		back: { 
+			down: back_dn, 
+			up: back_up 
+		}
+	},
+	com.badlogic.gdx.scenes.scene2d.ui.Image: {
+		background: { 
+			drawable: help 
+		}
+	}
+}
