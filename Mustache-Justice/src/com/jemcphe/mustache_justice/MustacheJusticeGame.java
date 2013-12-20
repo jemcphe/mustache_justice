@@ -35,7 +35,7 @@ public class MustacheJusticeGame extends Game {
 		Assets.instance.init(new AssetManager());
 		
 		// Start Game At Menu Screen
-		setScreen(new MenuScreen(this));
+		setScreen(new SplashScreen(this));
 		
 //		// Initialize controller and renderer
 //		worldController = new WorldController();

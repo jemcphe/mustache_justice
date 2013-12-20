@@ -25,6 +25,8 @@ public class Constants {
 	public static final String TEXTURE_ATLAS_CREDITS = "images/credits.pack";
 	// Help Screen Atlas
 	public static final String TEXTURE_ATLAS_HELP = "images/help.pack";
+	// Splash Screen Atlas
+	public static final String TEXTURE_ATLAS_SPLASH = "images/splash.pack";
 	// LIBGDX Text UI Skin Atlas
 	public static final String TEXTURE_ATLAS_LIBGDX_UI = "images/uiskin.atlas";
 	// Location of description file for skins
@@ -32,4 +34,5 @@ public class Constants {
 	public static final String SKIN_MUSTACHEJUSTICE_UI = "images/mustachejustice_ui.json";
 	public static final String SKIN_CREDITS = "images/credits_ui.json";
 	public static final String SKIN_HELP = "images/help.json";
+	public static final String SKIN_SPLASH = "images/splash.json";
 }
