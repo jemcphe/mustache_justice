@@ -1,0 +1,26 @@
+
+credits.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+credits
+  rotate: false
+  xy: 1, 1
+  size: 800, 480
+  orig: 800, 480
+  offset: 0, 0
+  index: -1
+back_dn
+  rotate: false
+  xy: 803, 433
+  size: 158, 48
+  orig: 158, 48
+  offset: 0, 0
+  index: -1
+back_up
+  rotate: false
+  xy: 803, 383
+  size: 158, 48
+  orig: 158, 48
+  offset: 0, 0
+  index: -1

@@ -21,9 +21,12 @@ public class Constants {
 	public static final float TIME_DELAY_GAME_WON = 5;
 	// Main Menu UI Atlas
 	public static final String TEXTURE_ATLAS_UI = "images/main_menu_mj.pack";
+	// Credits UI Atlas
+	public static final String TEXTURE_ATLAS_CREDITS = "images/credits.pack";
 	// LIBGDX Text UI Skin Atlas
 	public static final String TEXTURE_ATLAS_LIBGDX_UI = "images/uiskin.atlas";
 	// Location of description file for skins
 	public static final String SKIN_LIBGDX_UI = "images/uiskin.json";
 	public static final String SKIN_MUSTACHEJUSTICE_UI = "images/mustachejustice_ui.json";
+	public static final String SKIN_CREDITS = "images/credits_ui.json";
 }

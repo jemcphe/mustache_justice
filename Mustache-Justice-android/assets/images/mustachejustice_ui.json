@@ -20,5 +20,5 @@
 		logo: { 
 			drawable: logo 
 		}
-	},
+	}
 }

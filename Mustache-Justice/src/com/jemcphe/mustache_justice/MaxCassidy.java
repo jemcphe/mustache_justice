@@ -29,7 +29,7 @@ public class MaxCassidy extends AbstractGameObject {
 	}
 
 	public void init () {
-		dimension.set(.5f, 1f);
+		dimension.set(.45f, 1f);
 		maxRegion = Assets.instance.maxCassidy.player;
 
 		// Center image on game object

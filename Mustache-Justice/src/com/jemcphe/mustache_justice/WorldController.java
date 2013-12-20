@@ -202,6 +202,12 @@ public class WorldController implements InputProcessor {
 
 	@Override
 	public boolean keyUp(int keycode) {
+		
+		// Check for Android's Back Button pressed
+		if (keycode == Keys.BACK){
+			backToMenu();
+		}
+		
 		return false;
 	}
 
