@@ -89,7 +89,7 @@ public class WorldRenderer implements Disposable{
 			if (worldController.lives <= i){
 				batch.setColor(0.5f, 0.5f, 0.5f, 0.5f);
 			}
-			batch.draw(Assets.instance.maxCassidy.player, x + i * 50, y, 50, 50, 80, 100, 0.25f, -0.35f, 0);
+			batch.draw(Assets.instance.lives.lives, x + i * 50, y, 50, 50, 80, 100, 0.25f, -0.35f, 0);
 			batch.setColor(1, 1, 1, 1);
 		}
 	}

@@ -1,0 +1,33 @@
+
+mustacherunning.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+max
+  rotate: false
+  xy: 1, 4
+  size: 54, 97
+  orig: 54, 97
+  offset: 0, 0
+  index: 1
+max
+  rotate: false
+  xy: 57, 1
+  size: 50, 100
+  orig: 50, 100
+  offset: 0, 0
+  index: 3
+max
+  rotate: false
+  xy: 109, 1
+  size: 49, 100
+  orig: 49, 100
+  offset: 0, 0
+  index: 4
+max
+  rotate: false
+  xy: 160, 1
+  size: 48, 100
+  orig: 48, 100
+  offset: 0, 0
+  index: 2

@@ -1,8 +1,10 @@
 package com.jemcphe.mustache_justice;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.jemcphe.mustache_justice.Assets;
 
 public class MaxCassidy extends AbstractGameObject {
 	public static final String TAG = MaxCassidy.class.getName();
@@ -19,10 +21,16 @@ public class MaxCassidy extends AbstractGameObject {
 	public enum JUMP_STATE {
 		GROUNDED, FALLING, JUMP_RISING, JUMP_FALLING
 	}
-	private TextureRegion maxRegion;
+	
+	public Animation animation;
+	private Texture maxTexture;
+	private TextureRegion[] maxRegion;
+	public TextureRegion currentFrame;
 	public VIEW_DIRECTION viewDirection;
 	public float timeJumping;
 	public JUMP_STATE jumpState;
+	private static final int col = 4;
+	private static final int row = 2;
 
 	public MaxCassidy () {
 		init();
@@ -30,8 +38,21 @@ public class MaxCassidy extends AbstractGameObject {
 
 	public void init () {
 		dimension.set(.45f, 1f);
-		maxRegion = Assets.instance.maxCassidy.player;
+		
+		maxTexture = new Texture(Gdx.files.internal("images/mustacherunning.png"));
+		TextureRegion[][] tmp = TextureRegion.split(maxTexture, maxTexture.getWidth() / col, maxTexture.getHeight() / row);
+		maxRegion = new TextureRegion[col * row];
+		
+		int index = 0;
+		for(int i = 0; i < row; i++){
+			for (int j = 0; j < col; j++){
+				maxRegion[index++] = tmp[i][j];
+			}
+		}
 
+		animation = new Animation(1, maxRegion);
+		currentFrame = animation.getKeyFrame(1);
+		
 		// Center image on game object
 		origin.set(dimension.x / 2, dimension.y / 2);
 
@@ -116,19 +137,20 @@ public class MaxCassidy extends AbstractGameObject {
 
 	@Override
 	public void render(SpriteBatch batch) {
-		TextureRegion region = null;
-		// Draw image
-		region = maxRegion;
-		batch.draw(region.getTexture(),
-				position.x, position.y,
-				origin.x, origin.y,
-				dimension.x, dimension.y,
-				scale.x, scale.y,
-				rotation,
-				region.getRegionX(), region.getRegionY(),
-				region.getRegionWidth(), region.getRegionHeight(),
-				viewDirection == VIEW_DIRECTION.LEFT, false);
-		// Reset color to white
-		batch.setColor(0, 0, 0, 0);
+//		TextureRegion region;
+			
+			batch.draw(currentFrame, position.x, position.y, origin.x, origin.y, dimension.x, dimension.y, scale.x, scale.y, rotation);
+			
+//			batch.draw(region.getTexture(),
+//					position.x, position.y,
+//					origin.x, origin.y,
+//					dimension.x, dimension.y,
+//					scale.x, scale.y,
+//					rotation,
+//					region.getRegionX(), region.getRegionY(),
+//					region.getRegionWidth(), region.getRegionHeight(),
+//					viewDirection == VIEW_DIRECTION.LEFT, false);
+			// Reset color to white
+			batch.setColor(0, 0, 0, 0);
 	};
 }

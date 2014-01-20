@@ -17,7 +17,7 @@ import com.jemcphe.mustache_justice.MenuScreen;
 public class WorldController implements InputProcessor {
 
 	private Game game;
-	
+
 	private void backToMenu () {
 		// switch to menu screen
 		game.setScreen(new MenuScreen(game));
@@ -75,6 +75,32 @@ public class WorldController implements InputProcessor {
 			break;
 		}
 	};
+
+	private void onCollisionEnemyWithGround(Enemy enemy){
+
+		enemy.killed = true;
+		score += enemy.getScore();
+		Gdx.app.log(TAG, "Enemy Killed");
+
+		//		Enemy enemy = level.enemy;
+		//		float heightDifference = Math.abs(enemy.position.y
+		//				- ( ground.position.y
+		//						+ ground.bounds.height));
+		//		if (heightDifference > 0.25f) {
+		//			boolean hitLeftEdge = enemy.position.x
+		//					> ( ground.position.x
+		//							+ ground.bounds.width / 2.0f);
+		//					if (hitLeftEdge) {
+		//						enemy.position.x = ground.position.x
+		//								+ ground.bounds.width;
+		//					} else {
+		//						enemy.position.x = ground.position.x
+		//								- ground.bounds.width;
+		//					}
+		//					return;
+		//		}
+	}
+
 	private void onCollisionMaxWithDonut(Donut donut) {
 		donut.collected = true;
 		score += donut.getScore();
@@ -103,7 +129,34 @@ public class WorldController implements InputProcessor {
 			onCollisionMaxWithDonut(donut);
 			break;
 		}
+
+		// Text collision: Max Cassidy <-> Enemy
+		for (Enemy enemy : level.enemy) {
+			if (enemy.killed) continue;
+			r2.set(enemy.position.x, enemy.position.y,
+					enemy.bounds.width, enemy.bounds.height);
+			if (!r1.overlaps(r2)) continue;
+			onCollisionEnemyWithGround(enemy);
+			break;
+		}
+
+		// Test collision: Max Cassidy <-> Gun
+		for (Revolver revolver : level.revolver) {
+			if (revolver.collected) continue;
+			r2.set(revolver.position.x, revolver.position.y,
+					revolver.bounds.width, revolver.bounds.height);
+			if (!r1.overlaps(r2)) continue;
+			onCollisionMaxWithGun(revolver);
+			break;
+		}
+
 	}
+
+	private void onCollisionMaxWithGun(Revolver revolver) {
+		revolver.collected = true;
+		score += revolver.getScore();
+		Gdx.app.log(TAG, "Revolver collected");
+	};
 
 	// Footsteps Sound
 	Sound footSteps = Gdx.audio.newSound(Gdx.files.internal("data/running.mp3"));
@@ -202,12 +255,12 @@ public class WorldController implements InputProcessor {
 
 	@Override
 	public boolean keyUp(int keycode) {
-		
+
 		// Check for Android's Back Button pressed
 		if (keycode == Keys.BACK){
 			backToMenu();
 		}
-		
+
 		return false;
 	}
 
@@ -285,7 +338,7 @@ public class WorldController implements InputProcessor {
 			}
 
 		}
-		
+
 		return true;
 	}
 

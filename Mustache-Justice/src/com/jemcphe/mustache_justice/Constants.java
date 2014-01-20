@@ -7,8 +7,10 @@ public class Constants {
 	public static final float VIEWPORT_HEIGHT = 6.0f;
 	// Set the Atlas
 	public static final String TEXTURE_ATLAS_OBJECTS_1 = "images/mustachejustice.pack";
+	// Set the running atlas
+	public static final String TEXTURE_ATLAS_RUNNING = "images/mustacherunning.pack";
 	// Level 1
-	public static final String LEVEL_01 = "levels/level-01.png";
+	public static final String LEVEL_01 = "levels/level-1.png";
 	// GUI Width
 	public static final float VIEWPORT_GUI_WIDTH = 800.0f;
 	// GUI Height

@@ -15,13 +15,17 @@ public class Level {
 	public static final String TAG = Level.class.getName();
 
 	public MaxCassidy max;
+	public Array<Enemy> enemy;
 	public Array<Donut> donuts;
+	public Array<Revolver> revolver;
 
 	public enum BLOCK_TYPE {
 		EMPTY(0, 0, 0), // black
 		GROUND(0, 255, 0), // green
 		PLAYER_SPAWNPOINT(255, 255, 255), // white
-		ITEM_DONUT(255, 255, 0); // yellow
+		ITEM_DONUT(255, 255, 0), // yellow
+		ITEM_REVOLVER(255, 0, 255), // purple
+		ENEMY_SPAWNPOINT(255, 0, 0); // red
 		private int color;
 		private BLOCK_TYPE (int r, int g, int b) {
 			color = r << 24 | g << 16 | b << 8 | 0xff;
@@ -43,10 +47,12 @@ public class Level {
 	private void init (String filename) {
 		// player character
 		max = null;
+		// enemy character
+		enemy = new Array<Enemy>();
 		// objects
 		ground = new Array<Ground>();
 		donuts = new Array<Donut>();
-
+		revolver = new Array<Revolver>();
 		// load image file that represents the level data
 		Pixmap pixmap = new Pixmap(Gdx.files.internal(filename));
 		// scan pixels from top-left to bottom-right
@@ -85,10 +91,17 @@ public class Level {
 				else if
 				(BLOCK_TYPE.PLAYER_SPAWNPOINT.sameColor(currentPixel)) {
 					obj = new MaxCassidy();
-					offsetHeight = 1.0f;
-					obj.position.set(pixelX, baseHeight * obj.dimension.y
-							+ offsetHeight);
+					//					offsetHeight = 0.0f;
+					obj.position.set(pixelX, baseHeight);
 					max = (MaxCassidy)obj;
+				}
+				// Revolver
+				else if (BLOCK_TYPE.ITEM_REVOLVER.sameColor(currentPixel)) {
+					obj = new Revolver();
+					offsetHeight = -1.5f;
+					obj.position.set(pixelX,baseHeight * obj.dimension.y
+							+ offsetHeight);
+					revolver.add((Revolver)obj);
 				}
 				// donut
 				else if (BLOCK_TYPE.ITEM_DONUT.sameColor(currentPixel)) {
@@ -97,6 +110,22 @@ public class Level {
 					obj.position.set(pixelX, baseHeight * obj.dimension.y
 							+ offsetHeight);
 					donuts.add((Donut)obj);
+				}
+				// Enemy Spawnpoint
+				else if
+				(BLOCK_TYPE.ENEMY_SPAWNPOINT.sameColor(currentPixel)){
+
+					obj = new Enemy();
+					offsetHeight = -1.5f;
+					obj.position.set(pixelX, baseHeight * obj.dimension.y
+							+ offsetHeight);
+					enemy.add((Enemy)obj);
+
+					//					obj = new Enemy();
+					//					offsetHeight= .5f;
+					//					obj.position.set(pixelX, baseHeight * obj.dimension.y + offsetHeight);
+					//					enemy = (Enemy)obj;
+					System.out.println("Enemy has been spawned");
 				}
 				// unknown object/pixel color
 				else {
@@ -120,12 +149,27 @@ public class Level {
 	}
 	public void render (SpriteBatch batch) {
 		// Draw Ground
-		for (Ground object : ground)
+		for (Ground object : ground){
 			object.render(batch);
+		}
+			
 		// Draw Donuts
-		for (Donut donut : donuts)
+		for (Donut donut : donuts){
 			donut.render(batch);
+		}
+		// Draw Revolver
+		for (Revolver object : revolver){
+			object.render(batch);
+		}
+
+		// Draw Max Cassidy
 		max.render(batch);
+
+		// Draw Enemy
+		for (Enemy object: enemy){
+			object.render(batch);
+		}
+
 	}
 
 	public void update (float deltaTime) {
@@ -134,6 +178,11 @@ public class Level {
 			object.update(deltaTime);
 		for(Donut donut : donuts)
 			donut.update(deltaTime);
+		for(Revolver object : revolver)
+			object.update(deltaTime);
+		for(Enemy object : enemy){
+			object.update(deltaTime);
+		}
 	}
 
 }

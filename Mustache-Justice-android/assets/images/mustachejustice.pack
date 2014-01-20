@@ -38,3 +38,17 @@ donut
   orig: 55, 55
   offset: 0, 0
   index: -1
+mario
+  rotate: false
+  xy: 462, 462
+  size: 24, 48
+  orig: 24, 48
+  offset: 0, 0
+  index: -1
+revolver_large
+  rotate: false
+  xy: 33, 71
+  size: 44, 27
+  orig: 44, 27
+  offset: 0, 0
+  index: -1

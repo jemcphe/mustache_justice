@@ -24,9 +24,12 @@ public class Assets implements Disposable, AssetErrorListener{
 	}
 
 	public AssetMaxCassidy maxCassidy;
+	public AssetLives lives;
 	public AssetGround ground;
 	public AssetButtonOverlay buttonOverlay;
 	public AssetDonut donut;
+	public AssetGun gun;
+	public AssetEnemy enemy;
 
 	public void init (AssetManager assetManager) {
 		this.assetManager = assetManager;
@@ -48,9 +51,12 @@ public class Assets implements Disposable, AssetErrorListener{
 		// create game resource objects
 		fonts = new AssetFonts();
 		maxCassidy = new AssetMaxCassidy(atlas);
+		lives = new AssetLives(atlas);
 		ground = new AssetGround(atlas);
 		donut = new AssetDonut(atlas);
+		gun = new AssetGun(atlas);
 		buttonOverlay = new AssetButtonOverlay(atlas);
+		enemy = new AssetEnemy(atlas);
 
 	}
 
@@ -95,12 +101,34 @@ public class Assets implements Disposable, AssetErrorListener{
 	}
 
 	public class AssetMaxCassidy {
-		public final AtlasRegion player;
+		public AtlasRegion playerPos1;
+		public AtlasRegion playerPos2;
+		public AtlasRegion playerPos3;
+		public AtlasRegion playerPos4;
+		public AtlasRegion playerPos5;
 		public AssetMaxCassidy (TextureAtlas atlas) {
-			player = atlas.findRegion("player");
+			playerPos1 = atlas.findRegion("max_0");	
+			playerPos1 = atlas.findRegion("max_1");
+			playerPos1 = atlas.findRegion("max_2");
+			playerPos1 = atlas.findRegion("max_3");
+			playerPos1 = atlas.findRegion("max_4");
 		}
 	}
 
+	public class AssetLives {
+		public AtlasRegion lives;
+		public AssetLives (TextureAtlas atlas){
+			lives = atlas.findRegion("player");
+		}
+	}
+	
+	public class AssetEnemy {
+		public AtlasRegion enemy;
+		public AssetEnemy (TextureAtlas atlas){
+			enemy = atlas.findRegion("mario");
+		}
+	}
+	
 	public class AssetGround {
 		public final AtlasRegion middle;
 		public final AtlasRegion edge;
@@ -119,6 +147,14 @@ public class Assets implements Disposable, AssetErrorListener{
 		}
 	}
 
+	public class AssetGun {
+		public final AtlasRegion revolver;
+		
+		public AssetGun (TextureAtlas atlas){
+			revolver = atlas.findRegion("revolver_large");
+		}
+	}
+	
 	public class AssetButtonOverlay {
 		public final AtlasRegion buttonOverlay;
 
