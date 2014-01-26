@@ -13,9 +13,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.jemcphe.mustache_justice.Constants;
+import com.swarmconnect.Swarm;
 
 public class MenuScreen extends AbstractGameScreen{
-	private static final String TAG = MenuScreen.class.getName();
 
 	private Stage stage;
 	private Skin skinMustacheJustice;
@@ -25,6 +25,7 @@ public class MenuScreen extends AbstractGameScreen{
 	private Button help;
 	private Button btnMenuPlay;
 	private Button btnMenuCredits;
+	private Button btnLeaderboard;
 
 
 	// debug
@@ -40,6 +41,8 @@ public class MenuScreen extends AbstractGameScreen{
 		skinMustacheJustice = new Skin(
 				Gdx.files.internal(Constants.SKIN_MUSTACHEJUSTICE_UI),
 				new TextureAtlas(Constants.TEXTURE_ATLAS_UI));
+		
+		
 		// build all layers
 		Table layerBackground = buildBackgroundLayer();
 		Table layerObjects = buildObjectsLayer();
@@ -118,12 +121,20 @@ public class MenuScreen extends AbstractGameScreen{
 		Table layer = new Table();
 		layer.center().bottom().padBottom(50);
 		// Add Help Button
+		btnLeaderboard = new Button(skinMustacheJustice, "leaderboard");
 		help = new Button(skinMustacheJustice, "help");
+		layer.add(btnLeaderboard);
 		layer.add(help);
 		help.addListener(new ChangeListener(){
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				onHelpClicked();
+			}
+		});
+		btnLeaderboard.addListener(new ChangeListener(){
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				onLeaderboardClicked();
 			}
 		});
 		if (debugEnabled) layer.debug();
@@ -181,5 +192,10 @@ public class MenuScreen extends AbstractGameScreen{
 
 	private void onHelpClicked() { 
 		game.setScreen(new HelpScreen(game));
+	}
+	
+	private void onLeaderboardClicked() { 
+//		game.setScreen(new HelpScreen(game));
+		Swarm.showLeaderboards();
 	}
 }

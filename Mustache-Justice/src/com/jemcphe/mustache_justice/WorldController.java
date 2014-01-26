@@ -13,6 +13,7 @@ import com.jemcphe.mustache_justice.Ground;
 import com.jemcphe.mustache_justice.Donut;
 import com.badlogic.gdx.Game;
 import com.jemcphe.mustache_justice.MenuScreen;
+import com.swarmconnect.SwarmLeaderboard;
 
 public class WorldController implements InputProcessor {
 
@@ -204,6 +205,7 @@ public class WorldController implements InputProcessor {
 			leftIsTouched = false;
 			rightIsTouched = false;
 			timeLeftGameWonDelay -= deltaTime;
+			SwarmLeaderboard.submitScore(13438, (float) score);
 			if (timeLeftGameWonDelay < 0){
 				backToMenu();
 			}

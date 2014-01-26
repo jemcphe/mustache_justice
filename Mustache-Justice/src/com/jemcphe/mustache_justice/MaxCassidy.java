@@ -29,7 +29,7 @@ public class MaxCassidy extends AbstractGameObject {
 	public VIEW_DIRECTION viewDirection;
 	public float timeJumping;
 	public JUMP_STATE jumpState;
-	private static final int col = 4;
+	private static final int col = 5;
 	private static final int row = 2;
 
 	public MaxCassidy () {
@@ -51,7 +51,7 @@ public class MaxCassidy extends AbstractGameObject {
 		}
 
 		animation = new Animation(1, maxRegion);
-		currentFrame = animation.getKeyFrame(1);
+		currentFrame = animation.getKeyFrame(5);
 		
 		// Center image on game object
 		origin.set(dimension.x / 2, dimension.y / 2);

@@ -12,12 +12,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.jemcphe.mustache_justice.Constants;
 
 public class CreditsScreen extends AbstractGameScreen{
-
-	private static final String TAG = CreditsScreen.class.getName();
 
 	private Stage stage;
 	private Skin skinCredits;

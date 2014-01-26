@@ -8,7 +8,6 @@ import com.jemcphe.mustache_justice.WorldRenderer;
 
 public class GameScreen extends AbstractGameScreen{
 
-	private static final String TAG = GameScreen.class.getName();
 
 	private WorldController worldController;
 	private WorldRenderer worldRenderer;

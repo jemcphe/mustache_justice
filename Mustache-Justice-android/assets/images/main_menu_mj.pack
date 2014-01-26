@@ -5,49 +5,63 @@ filter: Nearest,Nearest
 repeat: none
 background_main_menu
   rotate: false
-  xy: 1, 464
+  xy: 1, 517
   size: 800, 480
   orig: 800, 480
   offset: 0, 0
   index: -1
 logo
   rotate: false
-  xy: 1, 265
+  xy: 1, 318
   size: 715, 197
   orig: 715, 197
   offset: 0, 0
   index: -1
 credits_dn
   rotate: false
-  xy: 1, 177
+  xy: 1, 230
   size: 345, 86
   orig: 345, 86
   offset: 0, 0
   index: -1
 credits_up
   rotate: false
-  xy: 1, 89
+  xy: 1, 142
   size: 345, 86
   orig: 345, 86
   offset: 0, 0
   index: -1
 play_dn
   rotate: false
-  xy: 348, 177
+  xy: 348, 230
   size: 345, 86
   orig: 345, 86
   offset: 0, 0
   index: -1
 play_up
   rotate: false
-  xy: 1, 1
+  xy: 1, 54
   size: 345, 86
   orig: 345, 86
   offset: 0, 0
   index: -1
+leaderboard_down
+  rotate: false
+  xy: 348, 177
+  size: 298, 51
+  orig: 298, 51
+  offset: 0, 0
+  index: -1
+leaderboard_up
+  rotate: false
+  xy: 1, 1
+  size: 298, 51
+  orig: 298, 51
+  offset: 0, 0
+  index: -1
 help_dn
   rotate: false
-  xy: 803, 896
+  xy: 803, 949
   size: 158, 48
   orig: 158, 48
   offset: 0, 0

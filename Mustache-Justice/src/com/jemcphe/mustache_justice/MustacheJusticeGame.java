@@ -1,10 +1,8 @@
 package com.jemcphe.mustache_justice;
 
 import com.badlogic.gdx.Application;
-import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.assets.AssetManager;
@@ -12,10 +10,6 @@ import com.jemcphe.mustache_justice.Assets;;
 
 public class MustacheJusticeGame extends Game {
 	
-	private WorldController worldController;
-	private WorldRenderer worldRenderer;
-	private boolean paused;	
-	private BackgroundAudio bgAudio;
 	boolean isPlaying;
 	public Sprite bgSprite;
 	public Sprite playerSprite;
@@ -27,7 +21,7 @@ public class MustacheJusticeGame extends Game {
 	World world;
 	@Override
 	public void create() {
-
+		
 		// Set Log level to debug
 		Gdx.app.setLogLevel(Application.LOG_DEBUG);
 		

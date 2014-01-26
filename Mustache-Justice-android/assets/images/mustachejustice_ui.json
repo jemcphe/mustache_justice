@@ -11,6 +11,10 @@
 		help: {
 			down: help_dn,
 			up: help_up
+		},
+		leaderboard: {
+			down: leaderboard_down,
+			up: leaderboard_up
 		}
 	},
 	com.badlogic.gdx.scenes.scene2d.ui.Image: {
