@@ -36,4 +36,7 @@ public class Donut extends AbstractGameObject {
 	public int getScore() {
 		return 100;
 	}
+	public int getCount() {
+		return 1;
+	}
 }

@@ -13,6 +13,8 @@ import com.jemcphe.mustache_justice.Ground;
 import com.jemcphe.mustache_justice.Donut;
 import com.badlogic.gdx.Game;
 import com.jemcphe.mustache_justice.MenuScreen;
+import com.swarmconnect.Swarm;
+import com.swarmconnect.SwarmAchievement;
 import com.swarmconnect.SwarmLeaderboard;
 
 public class WorldController implements InputProcessor {
@@ -29,6 +31,7 @@ public class WorldController implements InputProcessor {
 	public Level level;
 	public int lives;
 	public int score;
+	public int donutCount;
 	public CameraHelper cameraHelper;
 	float camMoveSpeed;
 	float camMoveSpeedAccelerationFactor;
@@ -105,8 +108,26 @@ public class WorldController implements InputProcessor {
 	private void onCollisionMaxWithDonut(Donut donut) {
 		donut.collected = true;
 		score += donut.getScore();
+		donutCount += donut.getCount();
 		nomSound.play(.3f);
-		Gdx.app.log(TAG, "Donut collected");
+		
+		if (donutCount == 5){
+			SwarmAchievement.unlock(18106);
+			score += 250;
+		}
+		
+		if (donutCount == 20){
+			SwarmAchievement.unlock(18108);
+			score += 500;
+		}
+		
+		if (donutCount == 70){
+			SwarmAchievement.unlock(18110);
+			score += 1000;
+		}
+		
+		System.out.println("Donuts Collected: " + donutCount);
+		
 	};
 
 	private void testCollisions () {
@@ -178,12 +199,14 @@ public class WorldController implements InputProcessor {
 
 	private void initLevel() {
 		score = 0;
+		donutCount = 0;
 		level = new Level(Constants.LEVEL_01);
 		cameraHelper.setTarget(level.max);
 	}
 
 	private void init() {
 		Gdx.input.setInputProcessor(this);
+		Swarm.setLeaderboardNotificationsEnabled(false);
 		cameraHelper = new CameraHelper();
 		lives = Constants.LIVES_START;
 		timeLeftGameOverDelay = 0;
@@ -195,17 +218,23 @@ public class WorldController implements InputProcessor {
 		//		handleDebugInput(deltaTime);
 		if (isGameOver()) {
 			System.out.println("Game Over");
+			SwarmAchievement.unlock(18114);
 			timeLeftGameOverDelay -= deltaTime;
 			if (timeLeftGameOverDelay < 0) backToMenu();
 		} else {
 			handleInputGame(deltaTime);
 		}
-
+		
 		if (isGameWon()) {
 			leftIsTouched = false;
 			rightIsTouched = false;
 			timeLeftGameWonDelay -= deltaTime;
+			// Check for Mustache Manimal Achievement
+			if(lives == Constants.LIVES_START && donutCount == 70){
+				SwarmAchievement.unlock(18112);
+			}
 			SwarmLeaderboard.submitScore(13438, (float) score);
+			SwarmAchievement.unlock(18104);
 			if (timeLeftGameWonDelay < 0){
 				backToMenu();
 			}
@@ -220,7 +249,7 @@ public class WorldController implements InputProcessor {
 			if(rightIsTouched == true){
 				for (int i = 0; i<=105; i++){
 					if (level.max.position.x <= i){
-						System.out.println("rightIsTouched");
+//						System.out.println("rightIsTouched");
 						level.max.velocity.x = level.max.terminalVelocity.x;
 
 					}
@@ -229,7 +258,7 @@ public class WorldController implements InputProcessor {
 			if(leftIsTouched == true){
 				for (int i = 0; i<=120; i++){
 					if (level.max.position.x >= i){
-						System.out.println("leftIsTouched");
+//						System.out.println("leftIsTouched");
 						level.max.velocity.x = -level.max.terminalVelocity.x;
 
 					}
@@ -275,10 +304,10 @@ public class WorldController implements InputProcessor {
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		if(pointer <= 2){
-			System.out.println("Touch Down!");
+//			System.out.println("Touch Down!");
 			// Left Button
 			if (screenX >= 65 && screenX <= 180 && screenY >= 600 && screenY <= 730){
-				System.out.println("Left Button Pressed");
+//				System.out.println("Left Button Pressed");
 				rightIsTouched = false;
 				leftIsTouched = true;
 				footSteps.setLooping(0, true);
@@ -287,7 +316,7 @@ public class WorldController implements InputProcessor {
 
 			// Right Button
 			if (screenX >= 240 && screenX <= 370 && screenY >= 600 && screenY <= 730){
-				System.out.println("Right Button Pressed");
+//				System.out.println("Right Button Pressed");
 				rightIsTouched = true;
 				leftIsTouched = false;
 				footSteps.setLooping(0, true);
@@ -296,7 +325,7 @@ public class WorldController implements InputProcessor {
 
 			// Jump Button
 			if (screenX >= 775 && screenX <= 910 && screenY >= 610 && screenY <= 745){
-				System.out.println("Jump Button Pressed");
+//				System.out.println("Jump Button Pressed");
 				/*
 				 * If in the air at all, disable jumping ability and jumping sound.
 				 * ONLY when GROUNDED, can the player jump.
@@ -311,7 +340,7 @@ public class WorldController implements InputProcessor {
 
 			// Punch Button
 			if (screenX >= 955 && screenX <= 1090 && screenY >= 610 && screenY <= 745){
-				System.out.println("Punch Button Pressed");
+//				System.out.println("Punch Button Pressed");
 				swingSound.play();
 			}
 		}
@@ -321,19 +350,19 @@ public class WorldController implements InputProcessor {
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		if(pointer < 1){
-			System.out.println("Touch Up! No Fingers On Screen");
+//			System.out.println("Touch Up! No Fingers On Screen");
 			footSteps.stop();
 			level.max.setJumping(false);
 			rightIsTouched = false;
 			leftIsTouched = false;
 		} else {
 			if(leftIsTouched == true){
-				System.out.println("Still one finger on screen");
+//				System.out.println("Still one finger on screen");
 				rightIsTouched = false;
 				level.max.setJumping(false);
 			}
 			if(rightIsTouched == true){
-				System.out.println("Still one finger on screen");
+//				System.out.println("Still one finger on screen");
 				leftIsTouched = false;
 				level.max.setJumping(false);
 
@@ -390,7 +419,7 @@ public class WorldController implements InputProcessor {
 
 	// Game Won
 	public boolean isGameWon() {
-		return level.max.position.x >= 104;
+		return level.max.position.x >= 105;
 	}
 
 	// Game Over
